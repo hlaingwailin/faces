@@ -1,0 +1,412 @@
+#navigation {
+    width: 100%;
+    color: #999999;
+    position: fixed;
+    top: 0;
+    background-color: #1B1B1B;
+    background-image: linear-gradient(to bottom, #222222, #111111);
+    background-repeat: repeat-x;
+    border-color: #252525;
+}
+
+#navigation.tab{
+    position: relative;
+}
+
+#navigation.tab ul.nav > li > a {
+    color: black;
+}
+
+#navigation.tab ul.nav > li > a.active {
+    color: blue;
+}
+
+#navigation.tab ul.nav > li > a:hover {
+    background-color: transparent;
+    color: blue;
+}
+
+ul.nav {
+    display: block;
+    left: 0;
+    margin: 0 10px 0 0;
+    position: relative;
+    list-style: none outside none;
+}
+
+ul.sub {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: -999px;
+    z-index: 100;
+    width: 150px;
+    background-color: #EFEFEF;
+}
+
+ul.sub li {
+    border-bottom: 1px solid #E3E3E3;
+    text-align: center;
+}
+
+ul.sub li > a {
+    color: #999999;
+    display: block;
+    font: 14px;
+    padding: 5px 5px;
+    text-decoration: none;
+}
+
+ul.sub li a:hover {
+    background-color: #F4F4F4;
+    color: black;
+}
+
+ul.nav > li {
+    padding-left: 10px;
+    float: left;
+}
+
+ul.nav > li > a {
+    color: #999999;
+    display: block;
+    font: 14px;
+    padding: 15px 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+ul.nav > li > a:hover {
+    background-color: transparent;
+    color: #FFFFFF;
+}
+
+ul.nav > li:hover > ul.sub {
+    top: auto;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+div#container {
+    margin: 0 auto;
+    width: 950px;
+}
+
+div.content {
+    padding: 100px 0 10px;
+    margin: 10px auto;
+}
+
+/*--------------------captcha--------------------------------*/
+
+div#captcha {
+    font-size: 40px;
+    font-weight: 100;
+    text-align: center;
+    width: 180px;
+    height: 50px;
+    color: #408080;
+    background: url("./images/list_style3.gif") repeat scroll 0 0 #FFFFFF;
+}
+
+/*--------------------form--------------------------------*/
+
+.form_block {
+    background: #f1f1f1;
+    padding: 20px 30px 5px 30px;
+    margin-bottom: 5px;
+}
+
+.form_block td:first-child {
+    width: 150px;
+}
+
+.form_block input[type="radio"], .form_block input[type="checkbox"] {
+    margin-right: 7px;
+}
+
+input, option, select, textarea {
+    font-family: Tahoma, "Times New Roman", Zawgyi-One, Georgia, Serif;
+}
+
+input.inputReadonly{
+    background: #aaaaaa;
+}
+
+#search_box {
+    background: #C0C0C0;
+    background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+    background-image: -moz-linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+    background-image: -o-linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+#search_box label {
+    float: left;
+    text-align: left;
+    font: 13px Zawgyi-One, Tahoma, Arial;
+}
+
+#search_box select {
+    width: 150px;
+    height: 30px;
+    border: 1px solid #ccc;
+    padding-left: 3px;
+    font: 13px Tahoma, Arial;
+}
+
+#search_box option {
+    border-bottom: 1px solid #ddd;
+    padding-left: 5px;
+}
+
+#search_box input.btn {
+    background: rgb(45, 129, 233); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(254, 204, 177, 1) 0%, rgba(241, 116, 50, 1) 50%, rgba(234, 85, 7, 1) 51%, rgba(251, 149, 94, 1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(254, 204, 177, 1)), color-stop(50%, rgba(241, 116, 50, 1)), color-stop(51%, rgba(234, 85, 7, 1)), color-stop(100%, rgba(251, 149, 94, 1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(254, 204, 177, 1) 0%, rgba(241, 116, 50, 1) 50%, rgba(234, 85, 7, 1) 51%, rgba(251, 149, 94, 1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(254, 204, 177, 1) 0%, rgba(241, 116, 50, 1) 50%, rgba(234, 85, 7, 1) 51%, rgba(251, 149, 94, 1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(254, 204, 177, 1) 0%, rgba(241, 116, 50, 1) 50%, rgba(234, 85, 7, 1) 51%, rgba(251, 149, 94, 1) 100%); /* IE10+ */
+    color: #fff;
+    font: bold 15px 'Trebuchet MS', Arial;
+    text-shadow: 0 0 1px #555;
+    border: 1px solid #f98d53;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+    height: 33px;
+    margin-top: 30px;
+}
+
+#search_box input.btn:hover {
+    -webkit-box-shadow: 0 2px 2px #999;
+    -moz-box-shadow: 0 2px 2px #999;
+}
+
+#search_box table tr:nth-child(2n) td {
+    background: none repeat scroll 0 0 transparent;
+}
+
+/*--------------------captcha--------------------------------*/
+
+div#captcha {
+    background: url("../../themes/simple/images/list_style3.gif") repeat scroll 0 0 #FFFFFF;
+    color: #408080;
+    font-size: 40px;
+    font-weight: 100;
+    height: 50px;
+    text-align: center;
+    width: 180px;
+}
+
+/*---------------------messages-----------------------------*/
+span.form_error {
+    padding-left: 5px;
+    color: #ff0000;
+}
+
+/*--------------------Property List -----------------------  */
+.offer_info {
+    border-bottom: 1px solid #ddd;
+    padding: 18px 0;
+    background-color: #eee;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    padding-left: 20px;
+}
+
+.closedeal {
+    background: url('./images/dealclose.png');
+    background-color: #eee;
+    background-size: 120px 120px;
+    background-repeat: no-repeat;
+    background-position: 70% 50%;
+}
+
+.info_title a {
+    color: #000;
+    font: 15px/22px 'Microsoft Tai Le', Arial;
+}
+
+.info_title a:hover {
+    text-decoration: underline;
+    color: #a08900;
+}
+
+.info_extra {
+    font: 13px/22px 'Microsoft Tai Le', Tahoma;
+}
+
+.info_extra span {
+    color: brown;
+}
+
+/*---------------------pagination-----------------------------*/
+
+div.pagination {
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+    float: left;
+    font-size: 14px;
+}
+
+div.pagination a {
+    padding: 2px 5px 2px 5px;
+    margin-right: 2px;
+    border: 1px solid #ddd;
+
+    text-decoration: none;
+    color: #d8325d;
+}
+
+div.pagination a:hover, div.pagination a:active {
+    border: 1px solid #ddd;
+    color: #fff;
+    background-color: #d8325d;
+}
+
+div.pagination span.current {
+    padding: 2px 5px 2px 5px;
+    margin-right: 2px;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    background-color: #d8325d;
+    color: #FFF;
+}
+
+div.pagination span.disabled {
+    padding: 2px 5px 2px 5px;
+    margin-right: 2px;
+    border: 1px solid #ddd;
+    color: #ccc;
+}
+
+/*---------------------news box-----------------------------*/
+
+.news_container {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    background: none repeat scroll 0 0 #f1f1f1;
+}
+
+.news_box {
+    height: 80%;
+    width: 100%;
+    padding: 5px;
+}
+
+.news_box table {
+    margin: 0px;
+}
+
+.news_box table tr td {
+    vertical-align: top;
+}
+
+a.news_title {
+    color: #333333;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+a.news_title:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+.news_image {
+    padding: 3px;
+    margin: auto;
+}
+
+p.news_article {
+    padding: 0px;
+    margin: 0px;
+}
+
+p.news_body {
+    text-indent: 30px;
+    padding: 5px 0 0;
+    margin: 0px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+form div#confirm_form {
+    background-color: #f1f1f1;
+    width: 50%;
+    padding: 10px;
+}
+
+
+table.list tr td{
+    vertical-align: top;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: 1px solid #d5d5d5;
+    border-bottom: none;
+    border-radius: 3px;
+    color: #444;
+    font: bold 12px Arial;
+    text-shadow: 1px 1px 1px #fff;
+    background: #ddd;
+    background: rgb(227, 227, 227); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(227, 227, 227, 1) 0%, rgba(195, 195, 195, 1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(227, 227, 227, 1)), color-stop(100%, rgba(195, 195, 195, 1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(227, 227, 227, 1) 0%, rgba(195, 195, 195, 1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(227, 227, 227, 1) 0%, rgba(195, 195, 195, 1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(227, 227, 227, 1) 0%, rgba(195, 195, 195, 1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(227, 227, 227, 1) 0%, rgba(195, 195, 195, 1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e3e3e3', endColorstr = '#c3c3c3', GradientType = 0); /* IE6-9 */
+}
+
+.btn:hover {
+    color: #222;
+}
+
+/*------------------------- Messages ------------------------------------*/
+
+.info, .success, .warning, .error, .validation {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding: 15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image: url('../../images/success.png');
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('../../images/error.png');
+}
+
+/*************************** Tap Menu **********************************************************/
+
+div .tabdivision{
+    width : 100%;
+    overflow-x: scroll;
+}

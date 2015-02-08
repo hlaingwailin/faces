@@ -1,0 +1,27 @@
+#listTable{
+    border-collapse: collapse;
+}
+
+#listTable th{
+    margin: 0.1em;
+    padding: 0.3em;
+    text-shadow: 0 1px 0 #ffffff;
+    vertical-align: top;
+    border-right: 1px solid #fff;
+    text-align: left;
+    color: #235a81;
+    font-weight: bold;
+    background: -moz-linear-gradient(center top, #ffffff, #cccccc) repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+#listTable tbody tr:nth-child(even){
+    background-color: #dfdfdf;
+}
+
+#listTable tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+#listTable tbody tr:hover{
+    background-color: #b6c6d7;
+}
