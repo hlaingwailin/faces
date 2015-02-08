@@ -1,0 +1,38 @@
+<form action="<?php echo $this->form->getAction(); ?>" method="<?php echo $this->form->getMethod(); ?>">
+
+    <table>
+        <?php echo $this->form->getElement('Agn_Id'); ?>
+        <tr>
+            <td>Name</td>
+            <td><?php echo $this->form->getElement('Agn_Name');  ?></td>
+        </tr>
+        <tr>
+            <td>Address 1</td>
+            <td><?php echo $this->form->getElement('Agn_Address1');  ?></td>
+        </tr>
+        <tr>
+            <td>Address 2</td>
+            <td><?php echo $this->form->getElement('Agn_Address2');  ?></td>
+        </tr>
+        <tr>
+            <td>Postal Code</td>
+            <td><?php echo $this->form->getElement('Agn_PostalCode');  ?></td>
+        </tr>
+        <tr>
+            <td>Telephone</td>
+            <td><?php echo $this->form->getElement('Agn_Telephone');  ?></td>
+        </tr>
+        <tr>
+            <td>Facsimile</td>
+            <td><?php echo $this->form->getElement('Agn_Facsimile');  ?></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><?php echo $this->form->getElement('Agn_Email');  ?></td>
+        </tr>
+        <tr>
+            <td colspan="2"><?php echo $this->form->getElement('submit');  ?></td>
+        </tr>
+    </table>
+
+</form>

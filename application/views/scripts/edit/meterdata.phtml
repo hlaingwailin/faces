@@ -1,0 +1,34 @@
+<form action="<?php echo $this->form->getAction(); ?>" method="<?php echo $this->form->getMethod(); ?>">
+
+    <table>
+        <?php echo $this->form->getElement('Met_Id'); ?>
+        <tr>
+            <td>Meter Serial Number</td>
+            <td><?php echo $this->form->getElement('Met_MeterSerialNumber');  ?></td>
+        </tr>
+        <tr>
+            <td>Shop Name</td>
+            <td><?php echo $this->form->getElement('Sho_Name');  ?></td>
+        </tr>
+        <tr>
+            <td>Last Read Usage</td>
+            <td><?php echo $this->form->getElement('Met_LastReadUsage');  ?></td>
+        </tr>
+        <tr>
+            <td>Last Read Date</td>
+            <td><?php echo $this->form->getElement('Met_LastReadDate');  ?></td>
+        </tr>
+        <tr>
+            <td>Current Read Usage</td>
+            <td><?php echo $this->form->getElement('Met_CurrentReadUsage');  ?></td>
+        </tr>
+        <tr>
+            <td>Current Read Date</td>
+            <td><?php echo $this->form->getElement('Met_CurrentReadDate');  ?></td>
+        </tr>
+        <tr>
+            <td colspan="2"><?php echo $this->form->getElement('submit');  ?></td>
+        </tr>
+    </table>
+
+</form>

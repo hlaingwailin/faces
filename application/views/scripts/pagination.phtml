@@ -1,0 +1,29 @@
+<?php
+
+// refer to zend pagination variables for more information
+echo '<div class="pagination">';
+
+if (isset($this->previous)) {
+    echo '<a href="' . $this->url(array('page' => $this->first)) . '">First</a>';
+    //echo '<b> . . . . . </b>';
+} else {
+    echo '<span class="disabled">First</span>';
+}
+
+
+foreach ($this->pagesInRange as $page) {
+    if ($this->current != $page) {
+        echo '	<a href="' . $this->url(array('page' => $page)) . '">' . $page . "</a>";
+    } else {
+        echo '<span class="disabled">' . $page . '</span>';
+    }
+}
+
+if (isset($this->next)) {
+    echo '<b> . . . . . </b>';
+    echo '<a href="' . $this->url(array('page' => $this->last)) . '">Last</a>';
+} else {
+    echo '<span class="disabled">Last</span>';
+}
+
+echo '</div>';

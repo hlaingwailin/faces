@@ -1,0 +1,38 @@
+<form action="<?php echo $this->form->getAction(); ?>" method="<?php echo $this->form->getMethod(); ?>">
+
+    <table>
+        <?php echo $this->form->getElement('Rat_Id'); ?>
+        <tr>
+            <td>Start Date</td>
+            <td><?php echo $this->form->getElement('Rat_StartDate');  ?></td>
+        </tr>
+        <tr>
+            <td>End Date</td>
+            <td><?php echo $this->form->getElement('Rat_EndDate');  ?></td>
+        </tr>
+        <tr>
+            <td>Amount</td>
+            <td><?php echo $this->form->getElement('Rat_Value');  ?></td>
+        </tr>
+        <tr>
+            <td colspan="2"><?php echo $this->form->getElement('submit');  ?></td>
+        </tr>
+    </table>
+
+</form>
+
+
+<script>
+    var baseUrl = "<?php echo $this->baseUrl(); ?>";
+    $(function () {
+        $("#Rat_StartDate,#Rat_EndDate").datepicker(
+            {
+                showOn:"both",
+                buttonImage:baseUrl + "/images/b_calendar.png",
+                buttonImageOnly:true,
+                buttonText:"Select date",
+                dateFormat:"yy-mm-dd"
+            }
+        );
+    });
+</script>

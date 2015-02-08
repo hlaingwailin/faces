@@ -1,0 +1,162 @@
+<form action="<?php echo $this->form->getAction(); ?>" method="<?php echo $this->form->getMethod(); ?>">
+
+    <table>
+        <?php echo $this->form->getElement('Sho_Id'); ?>
+        <tr>
+            <td>Shop Name</td>
+            <td><?php echo $this->form->getElement('Sho_Name');  ?></td>
+            <td>Account No</td>
+            <td><?php echo $this->form->getElement('Sho_CustomerId');  ?></td>
+        </tr>
+        <tr>
+            <td>Building Name</td>
+            <td><?php echo $this->form->getElement('Sho_BuildingId');  ?></td>
+            <td>Company Name</td>
+            <td><?php echo $this->form->getElement('Sop_Name')->getValue();  ?></td>
+        </tr>
+        <tr>
+            <td>Premise Address</td>
+            <td><?php echo $this->form->getElement('Sho_PremiseAddress');  ?></td>
+            <td>Payment Term</td>
+            <td><?php echo $this->form->getElement('Sho_PaymentTerm');  ?></td>
+        </tr>
+        <tr>
+            <td>Meter S.N.</td>
+            <td><?php echo $this->form->getElement('Sho_MeterId');  ?></td>
+            <td>Terminated</td>
+            <td><?php echo $this->form->getElement('Sho_Terminated');  ?></td>
+        </tr>
+        <tr>
+            <td>Remark</td>
+            <td><?php echo $this->form->getElement('Sho_Remark');  ?></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+    </table>
+
+<br />
+    <div id="navigation" class="tab">
+       <div>
+         <ul class="nav pull-left">
+            <li><a class="active" id="meterReads">Meter Reads</a></li>
+            <li><a id="invoices">Invoices</a></li>
+            <li><a id="payments">Payments</a></li>
+            <li><a id="deposits">Deposits</a></li>
+         </ul>
+       </div>
+    </div>
+<br />
+<hr />
+<br />
+
+
+    <!--  Meter Reads -->
+
+    <div id="meterReads" class="tabdivision">
+        <table id="listTable">
+            <?php $displayCols = array('Met_LastReadUsage' => 'text', 'Met_LastReadDate' => 'text', 'Met_CurrentReadUsage' => 'text', 'Met_CurrentReadDate' => 'text', 'Met_PreviousUsage' => 'text', 'Met_PreviousUsageEndDate' => 'text', 'Met_CurrentUsage' => 'text', 'Met_CurrentUsageEndDate' => 'text'); ?>
+            <thead>
+            <tr>
+                <th>Last Read</th>
+                <th>LR Date</th>
+                <th>Cur Read</th>
+                <th>CR Date</th>
+                <th>Prev. Usage</th>
+                <th>PU End Date</th>
+                <th>Cur Usage</th>
+                <th>CU End Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php for ($i = 0; $i < count($this->combinedData['meterData']); $i++) { ?>
+            <tr>
+                <?php  foreach ($displayCols as $key => $type) { ?>
+
+                    <td>
+                      <!--  <input type="<?php echo $displayCols[$key] ?>" name="meterData[<?php echo $i ?>][<?php echo $key ?>]" value="<?php echo $value ?>" /> -->
+                        <span><?php echo $this->combinedData['meterData'][$i][$key] ?></span>
+                    </td>
+
+                <?php } ?>
+            </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!--  Invoices -->
+
+    <div id="invoices" style="display:none;" class="tabdivision">
+        <table id="listTable">
+            <?php $displayCols = array('Inv_InvoiceNumber' => 'text', 'Inv_TotalAmount' => 'text', 'Inv_DueDate' => 'text', 'Inv_CreatedOn' => 'text'); ?>
+            <thead>
+                 <tr>
+                     <th>Invoice Number</th>
+                     <th>Amount</th>
+                     <th>Due Date</th>
+                     <th>Issued Date</th>
+                 </tr>
+            </thead>
+            <tbody>
+            <?php for ($i = 0; $i < count($this->combinedData['meterData']); $i++) { ?>
+            <tr>
+                <?php  foreach ($displayCols as $key => $type) { ?>
+                <td>
+                    <span><?php echo $this->combinedData['invoicesData'][$i][$key] ?></span>
+                </td>
+                <?php } ?>
+            </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!--  Deposits -->
+
+<div id="deposits" style="display:none;" class="tabdivision">
+    <table id="listTable">
+        <?php $displayCols = array('Dep_Id' => 'hidden', 'Dep_Amount' => 'text', 'Dep_Type' => 'text', 'Dep_CreatedOn' => 'text'); ?>
+        <thead>
+             <tr>
+                 <th></th>
+                 <th>Amount</th>
+                 <th>Type</th>
+                 <th>Date</th>
+             </tr>
+        </thead>
+        <tbody>
+        <?php for($i = 0; $i < count($this->combinedData['depositData']); $i++) { ?>
+            <tr>
+                <?php  foreach($this->combinedData['depositData'][$i] as $key => $value){ ?>
+                    <?php if(array_key_exists($key, $displayCols)){ ?>
+                        <td>
+                             <input type="<?php echo $displayCols[$key] ?>" name="depositData[<?php echo $i ?>][<?php echo $key ?>]" value="<?php echo $value ?>" />
+                        </td>
+                    <?php } ?>
+                <?php } ?>
+             </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <?php echo $this->form->getElement('submit');  ?>
+</div>
+</form>
+
+
+<script>
+
+    $("#navigation.tab ul > li > a").click(
+        function(){
+            $("#navigation.tab ul > li > a").removeClass('active');
+            $(this).addClass('active');
+
+            $("div.tabdivision").hide();
+            $("div#" + $(this).attr('id') + ".tabdivision").show();
+            //alert($(this).attr('id'));
+        }
+    );
+</script>

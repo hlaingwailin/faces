@@ -1,0 +1,19 @@
+<?php echo $this->partial("partials/doctype.phtml"); ?>
+
+<html>
+<?php echo $this->partial("partials/head.phtml"); ?>
+
+<body>
+<?php echo $this->partial("partials/header.phtml"); ?>
+
+<h1>Welcome to Index Page</h1>
+
+<div id="container">
+    <div class="content">
+            <?php echo $this->layout()->content; ?>
+    </div>
+</div>
+
+<?php echo $this->partial("partials/footer.phtml"); ?>
+</body>
+</html>

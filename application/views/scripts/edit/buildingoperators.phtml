@@ -1,0 +1,35 @@
+
+<form action="<?php echo $this->form->getAction(); ?>" method="<?php echo $this->form->getMethod(); ?>">
+
+    <table>
+        <?php echo $this->form->getElement('Buo_Id'); ?>
+        <tr>
+            <td>Building Name</td>
+            <td><?php echo $this->form->getElement('Buo_Name');  ?></td>
+        </tr>
+        <tr>
+            <td>Address 1</td>
+            <td><?php echo $this->form->getElement('Buo_Address1');  ?></td>
+        </tr>
+        <tr>
+            <td>Address 2</td>
+            <td><?php echo $this->form->getElement('Buo_Address2');  ?></td>
+        </tr>
+        <tr>
+            <td>Postal Code</td>
+            <td><?php echo $this->form->getElement('Buo_PostalCode');  ?></td>
+        </tr>
+        <tr>
+            <td>Registration No</td>
+            <td><?php echo $this->form->getElement('Buo_RegistrationNo');  ?></td>
+        </tr>
+        <tr>
+            <td>GST Registration No</td>
+            <td><?php echo $this->form->getElement('Buo_GSTRegistrationNo');  ?></td>
+        </tr>
+        <tr>
+            <td colspan="2"><?php echo $this->form->getElement('submit');  ?></td>
+        </tr>
+    </table>
+
+</form>

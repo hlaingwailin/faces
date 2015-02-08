@@ -1,0 +1,32 @@
+
+<!--
+<form action = "<?php echo $this->baseUrl() . '/lists/shopoperators' ?>" method ="post" >
+     <table>
+         <tr>
+             <td>Name</td>
+             <td><input name="searchCriteria['name']" /></td>
+         </tr>
+         <tr>
+             <td>Address</td>
+             <td>
+                 <input name="searchCriteria['address']" />
+             </td>
+         </tr>
+         <tr>
+             <td><input value="Search" name="search" type="submit" /></td>
+         </tr>
+     </table>
+</form>
+
+-->
+
+
+
+<?php
+
+
+echo $this->searchFormTable($this)->getSearchFormTable($this->headerColMap);
+//$actions = array('view' => '', 'edit' => '', 'delete' => '');
+echo $this->listTable($this)->getListTable($this->headerColMap, $this->data, $actions, $pager = true, true);
+
+?>

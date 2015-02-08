@@ -1,0 +1,38 @@
+<form action="<?php echo $this->form->getAction(); ?>" method="<?php echo $this->form->getMethod(); ?>">
+
+    <table>
+        <?php echo $this->form->getElement('Sop_Id'); ?>
+        <tr>
+            <td>Company Name</td>
+            <td><?php echo $this->form->getElement('Sop_Name');  ?></td>
+        </tr>
+        <tr>
+            <td>Address 1</td>
+            <td><?php echo $this->form->getElement('Sop_MailingAddress1');  ?></td>
+        </tr>
+        <tr>
+            <td>Address 2</td>
+            <td><?php echo $this->form->getElement('Sop_MailingAddress2');  ?></td>
+        </tr>
+        <tr>
+            <td>Postal Code</td>
+            <td><?php echo $this->form->getElement('Sop_PostalCode');  ?></td>
+        </tr>
+        <tr>
+            <td>Attention</td>
+            <td><?php echo $this->form->getElement('Sop_Attention');  ?></td>
+        </tr>
+        <tr>
+            <td>Main Contact</td>
+            <td><?php echo $this->form->getElement('Sop_MainContactPerson');  ?></td>
+        </tr>
+        <tr>
+            <td>GIRO Account No</td>
+            <td><?php echo $this->form->getElement('Sop_GiroAccountNo');  ?></td>
+        </tr>
+        <tr>
+            <td colspan="2"><?php echo $this->form->getElement('submit');  ?></td>
+        </tr>
+    </table>
+
+</form>

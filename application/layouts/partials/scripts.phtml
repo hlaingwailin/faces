@@ -1,0 +1,23 @@
+<script>
+
+function goToLink(link){
+    window.location.href = link;
+}
+
+$(document).ready(function () {
+    $("#msgs, #errs").hide();
+
+    if ($("#msgs").html().trim() != "") {
+        $("#msgs").css('display', 'block');
+    }
+
+    if ($("#errs").html().trim() != "") {
+        $("#errs").css('display', 'block');
+    }
+});
+
+$('body').click(function () {
+    $("#msgs, #errs").hide();
+});
+
+</script>

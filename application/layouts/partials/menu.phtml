@@ -1,0 +1,81 @@
+<div id="navigation">
+    <div>
+        <ul class="nav pull-left">
+            <li class="active"><a href="<?php echo $this->baseUrl(); ?>/index/index"><span>Home</span></a></li>
+            <?php if (Zend_Auth::getInstance()->hasIdentity()) { ?>
+            <li><a href="#">
+                <span>Set Up</span>
+            </a>
+                <ul class="sub">
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/lists/billingagents"><span>Billing Agents</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/lists/retailers"><span>Retailers</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">
+                <span>Upload Data</span>
+            </a>
+                <ul class="sub">
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/batchuploader/uploadbuildingoperators"><span>Builidng Operators</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/batchuploader/uploadbuildings"><span>Buildings</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/batchuploader/uploadcompanies"><span>Shop Operators</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/batchuploader/uploadtenants"><span>Shops</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/batchuploader/uploadmeterdata"><span>Meter Data</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/batchuploader/uploaddeposits"><span>Deposits</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/batchuploader/uploadpayments"><span>Payments</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">
+                <span>Data List</span>
+            </a>
+                <ul class="sub">
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/lists/buildingoperators"><span>Builidng Operators</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/lists/buildings"><span>Buildings</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/lists/shopoperators"><span>Shop Operators</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/lists/shops"><span>Shops</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/lists/meterdata"><span>Meter Data</span></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->baseUrl(); ?>/lists/meterrates"><span>Meter Rates</span></a>
+                    </li>
+                </ul>
+            </li>
+            <?php } ?>
+        </ul>
+        <ul class="nav pull-right">
+            <?php if (Zend_Auth::getInstance()->hasIdentity()) {
+            $login = Zend_Auth::getInstance()->getStorage()->read(); ?>
+            <li><a><span><?php echo 'Logged in as ' . $login->Usr_Email; ?></span></a></li>
+            <li><a href="<?php echo $this->baseUrl(); ?>/authentication/logout"><span>Logout</span></a></li>
+            <?php } else { ?>
+            <li><a href="<?php echo $this->baseUrl(); ?>/authentication/login"><span>Login</span></a></li>
+            <?php } ?>
+        </ul>
+    </div>
+</div>

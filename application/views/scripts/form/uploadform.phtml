@@ -1,0 +1,21 @@
+<?php $form_name = $this->escape($this->element->getName()); ?>
+
+
+<form action="<?php echo $this->escape($this->element->getAction()); ?>"
+      method="<?php echo $this->escape($this->element->getMethod()); ?>"
+      enctype="<?php echo $this->escape($this->element->getEnctype()); ?>"
+      name="<?php echo $form_name ?>"
+      id="<?php echo $form_name ?>">
+
+<fieldset>
+  <legend>
+         <?php echo $this->element->getLegend() ?>
+  </legend>
+
+    <?php echo $this->element->Master_Data_File; ?>
+    <?php echo $this->element->submit; ?>
+
+</fieldset>
+
+
+</form>

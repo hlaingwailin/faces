@@ -1,0 +1,24 @@
+<?php
+
+//$actions = array('view' => '', 'edit' => '');
+
+echo $this->searchFormTable($this)->getSearchFormTable($this->headerColMap);
+echo $this->listTable($this)->getListTable($this->headerColMap, $this->data, $actions, $pager = false, $addButton = true);
+
+
+?>
+
+<script>
+    var baseUrl = "<?php echo $this->baseUrl(); ?>";
+    $(function () {
+        $("#Rat_StartDate,#Rat_EndDate").datepicker(
+            {
+                showOn:"both",
+                buttonImage:baseUrl + "/images/b_calendar.png",
+                buttonImageOnly:true,
+                buttonText:"Select date",
+                dateFormat:"yy-mm-dd"
+            }
+        );
+    });
+</script>
