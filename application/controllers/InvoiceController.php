@@ -366,15 +366,17 @@ class InvoiceController extends Zend_Controller_Action
 
          // find out previous invoice balance and payment
          $previousInvoiceBalance = $this->invoiceHelper->getPreviousInvoiceData($invoiceData['meterData'][0]['Met_MeterSerialNumber'], $invoiceData['meterData'][0]['Met_CustomerId'], $invoiceData['meterData'][0]['Met_BatchId']);
-         $previousInvoicePaymentData = $this->invoiceHelper->getPaymentDataForSpecificInvoice($previousInvoiceBalance['Inv_Id']);
-         $outstandingBalance = $this->invoiceHelper->getInvoiceOutstandingBalance($previousInvoiceBalance['Inv_TotalAmount'], $previousInvoicePaymentData['Pay_Amount']);
+         if(!empty($previousInvoiceBalance)){
+             $previousInvoicePaymentData = $this->invoiceHelper->getPaymentDataForSpecificInvoice($previousInvoiceBalance['Inv_Id']);
+             $outstandingBalance = $this->invoiceHelper->getInvoiceOutstandingBalance($previousInvoiceBalance['Inv_TotalAmount'], $previousInvoicePaymentData['Pay_Amount']);
+         }
 
          $page->drawText("Balance B/F from previous Invoice", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 305));
          $page->drawText($this->invoiceHelper->formatNumber($previousInvoiceBalance['Inv_TotalAmount']), self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 305));
          $page->drawText("Payment received as at " . $this->invoiceHelper->convertToInvoiceDateFormat($previousInvoicePaymentData['Pay_CreatedOn']), self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 320));
          $page->drawText($this->invoiceHelper->formatNumber($previousInvoicePaymentData['Pay_Amount']), self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 320));
          $page->drawText("Outstanding Balance", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 335));
-         $page->drawText($outstandingBalance, self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 335));
+         $page->drawText(empty($outstandingBalance) ? '-' : $outstandingBalance, self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 335));
          $page->drawText("Total Current charges due on       " . $this->invoiceHelper->getPaymentDueDate($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']), self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 360));
          $page->drawLine(self::$LEFT_MARGIN, $this->getHeight(self::$TOP_MARGIN + 365), self::$SECOND_COLUMN_LEFT_MARGIN - 20, $this->getHeight(self::$TOP_MARGIN + 365));
          $this->setBoldText($page, $style);

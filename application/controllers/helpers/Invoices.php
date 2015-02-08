@@ -86,6 +86,8 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
      * @return string
      */
     function convertToInvoiceDateFormat($date){
+        if(empty($date)) return '';
+
         $dateObj = new DateTime($date);
         return $dateObj->format(self::DEFAULT_INVOICE_DATE_FORMAT);
     }
@@ -208,7 +210,7 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
     }
 
     function formatNumber($number){
-        return number_format($number, 2, '.', '');
+        return empty($number) ? '-' : number_format($number, 2, '.', '');
     }
 
     /************************** Privare Helper Methods ***********************************************/
