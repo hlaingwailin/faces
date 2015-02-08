@@ -157,7 +157,10 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
         $table = new Model_DbTable_MeterData();
         $row = $table->find($meterdataId)->toArray();
 
-        return $this->getInvoiceSavingFolder($row[0]['Met_CustomerId']) . "testinvoice.pdf";
+        $tblInv = new Model_DbTable_Invoices();
+        $invData = $tblInv->find($row[0]['Met_InvoiceId']);
+
+        return $this->getInvoiceSavingFolder($row[0]['Met_CustomerId']) . $invData[0]['Inv_InvoiceNumber'] . ".pdf";
     }
 
     // get the bacthId (Eg. 1407) from meter data , then retrieve meter data record with bacth 1406 , then retrieve corresponding invoice
