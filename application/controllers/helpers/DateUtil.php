@@ -27,6 +27,7 @@ class My_Action_Helper_DateUtil extends Zend_Controller_Action_Helper_Abstract
     public static function rollDays(DateTime $dateObj, $days){
          return $dateObj->modify("+" . $days . " day");
     }
+
 }
 
 ?>

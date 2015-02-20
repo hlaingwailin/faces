@@ -116,8 +116,12 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
 
     }
 
-    function findRateForGivenReadDate($readDate){
+    function findRateForGivenBatchNumber($batchNumber){
+        $tblRates = new Model_DbTable_Rates();
+        $date = $this->convertBatchNumberToDate($batchNumber);
+        $rate = $tblRates->getRateForSpecificDate($date);
 
+        return $rate;
     }
 
     function findStartDateForLastInvoice($meterDataRecord){
@@ -236,6 +240,19 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
         }
 
         return $previousBatchId;
+    }
+
+    private function convertBatchNumberToDate($batchNumber, $type='FIRSTDAY'){
+
+        $year = '20' . substr($batchNumber, 0, 2);
+        $month = substr($batchNumber, 2, 2);
+        $lastDay = Model_Constants_Constant::$MONTH_TO_DAYS_MAP[$month];
+
+        if($type == 'FIRSTDAY'){
+            return $year . '-' . $month . '-' . '01';
+        }else{
+            return $year . '-' . $month . '-' . $lastDay;
+        }
     }
 }
 
