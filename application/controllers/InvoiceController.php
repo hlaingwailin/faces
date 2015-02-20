@@ -241,7 +241,7 @@ class InvoiceController extends Zend_Controller_Action
 
 
 
-    /************************** Privare Helper Methods ***********************************************/
+    /************************** Private Helper Methods ***********************************************/
 
      private function generatePdfContent(Zend_Pdf &$pdf, $pageNo, $invoiceData, $parameters = array()){
          //$pdf = new Zend_pdf();
@@ -372,11 +372,14 @@ class InvoiceController extends Zend_Controller_Action
          }
 
          $page->drawText("Balance B/F from previous Invoice", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 305));
-         $page->drawText($this->invoiceHelper->formatNumber($previousInvoiceBalance['Inv_TotalAmount']), self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 305));
+         //$page->drawText($this->invoiceHelper->formatNumber($previousInvoiceBalance['Inv_TotalAmount']), self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 305));
+         $this->drawTextRightAligned($page, $this->invoiceHelper->formatNumber($previousInvoiceBalance['Inv_TotalAmount']), 325, $this->getHeight(self::$TOP_MARGIN + 305));
          $page->drawText("Payment received as at " . $this->invoiceHelper->convertToInvoiceDateFormat($previousInvoicePaymentData['Pay_CreatedOn']), self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 320));
-         $page->drawText($this->invoiceHelper->formatNumber($previousInvoicePaymentData['Pay_Amount']), self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 320));
+         //$page->drawText($this->invoiceHelper->formatNumber($previousInvoicePaymentData['Pay_Amount']), self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 320));
+         $this->drawTextRightAligned($page, $this->invoiceHelper->formatNumber($previousInvoicePaymentData['Pay_Amount']), 325, $this->getHeight(self::$TOP_MARGIN + 320));
          $page->drawText("Outstanding Balance", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 335));
-         $page->drawText(empty($outstandingBalance) ? '-' : $outstandingBalance, self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 335));
+         //$page->drawText(empty($outstandingBalance) ? '-' : $outstandingBalance, self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 335));
+         $this->drawTextRightAligned($page, empty($outstandingBalance) ? '-' : $this->invoiceHelper->formatNumber($outstandingBalance), 325, $this->getHeight(self::$TOP_MARGIN + 335));
          $page->drawText("Total Current charges due on       " . $this->invoiceHelper->getPaymentDueDate($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']), self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 360));
          $page->drawLine(self::$LEFT_MARGIN, $this->getHeight(self::$TOP_MARGIN + 365), self::$SECOND_COLUMN_LEFT_MARGIN - 20, $this->getHeight(self::$TOP_MARGIN + 365));
          $this->setBoldText($page, $style);
@@ -601,6 +604,16 @@ class InvoiceController extends Zend_Controller_Action
          return $invoiceData;
 
      }
+
+    private function drawTextRightAligned(&$page, $content, $endX, $yPos){
+         $characterWidth = Model_Constants_Constant::$DEFAULT_CHARACTER_WIDTH;
+
+         $numCharacters = strlen($content);
+         $contentLength = $characterWidth * $numCharacters;
+         $startX = $endX - $contentLength;
+         $page->drawText($content, $startX, $yPos);
+
+    }
 
 
 }

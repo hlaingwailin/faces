@@ -22,6 +22,7 @@ class Model_Constants_Constant
     // Pdf
     public static $DEFAULT_LINE_HEIGHT = "15";
     public static $DEFAULT_INVOICE_FOLDER = "invoices";
+    public static $DEFAULT_CHARACTER_WIDTH = "5"; // 5px
 
     public static $MONTH_TO_DAYS_MAP = array(
         '01' => 31,
