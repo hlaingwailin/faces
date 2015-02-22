@@ -116,12 +116,36 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
 
     }
 
+    function getCurrentInvoiceChargeData($meterData){
+
+        $currentInvoiceChargeData = array();
+        $usageAndCharegeData[] = array('Usage' => $meterData['Met_CurrentUsage'], 'Rate' => $rate = $this->findRateForGivenDate($meterData['Met_CurrentUsageEndDate']), 'Amount' => $this->formatNumber($meterData['Met_CurrentUsage'] * $rate));
+
+        if(!empty($meterData['Met_PreviousUsageEndDate'])){
+            $usageAndCharegeData[] = array('Usage' => $meterData['Met_PreviousUsage'], 'Rate' => $rate = $this->findRateForGivenDate($meterData['Met_PreviousUsageEndDate']), 'Amount' => $this->formatNumber($meterData['Met_PreviousUsage'] * $rate));
+        }
+
+        $currentInvoiceChargeData['UsageData'] = $usageAndCharegeData;
+        $currentInvoiceChargeData['TotalWithoutGST'] = $usageAndCharegeData[0]['Amount'] + $usageAndCharegeData[1]['Amount'];
+        $currentInvoiceChargeData['TotalWithGST'] = $this->formatNumber($currentInvoiceChargeData['TotalWithoutGST'] * 1.07);
+        $currentInvoiceChargeData['GST'] = $this->formatNumber($currentInvoiceChargeData['TotalWithoutGST'] * 0.07);
+
+        return $currentInvoiceChargeData;
+    }
+
+    function findRateForGivenDate($date){
+        $tblRates = new Model_DbTable_Rates();
+        $rate = $tblRates->getRateForSpecificDate($date);
+
+        return $rate['Rat_Value'];
+    }
+
     function findRateForGivenBatchNumber($batchNumber){
         $tblRates = new Model_DbTable_Rates();
         $date = $this->convertBatchNumberToDate($batchNumber);
         $rate = $tblRates->getRateForSpecificDate($date);
 
-        return $rate;
+        return $rate['Rat_Value'];
     }
 
     function findStartDateForLastInvoice($meterDataRecord){

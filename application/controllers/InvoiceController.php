@@ -371,6 +371,9 @@ class InvoiceController extends Zend_Controller_Action
              $outstandingBalance = $this->invoiceHelper->getInvoiceOutstandingBalance($previousInvoiceBalance['Inv_TotalAmount'], $previousInvoicePaymentData['Pay_Amount']);
          }
 
+         // retrieve and calculate usage and charges data
+         $usageAndChargesData = $this->invoiceHelper->getCurrentInvoiceChargeData($invoiceData['meterData'][0]);
+
          $page->drawText("Balance B/F from previous Invoice", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 305));
          //$page->drawText($this->invoiceHelper->formatNumber($previousInvoiceBalance['Inv_TotalAmount']), self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 305));
          $this->drawTextRightAligned($page, $this->invoiceHelper->formatNumber($previousInvoiceBalance['Inv_TotalAmount']), 325, $this->getHeight(self::$TOP_MARGIN + 305));
@@ -380,7 +383,9 @@ class InvoiceController extends Zend_Controller_Action
          $page->drawText("Outstanding Balance", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 335));
          //$page->drawText(empty($outstandingBalance) ? '-' : $outstandingBalance, self::$LEFT_MARGIN + 230, $this->getHeight(self::$TOP_MARGIN + 335));
          $this->drawTextRightAligned($page, empty($outstandingBalance) ? '-' : $this->invoiceHelper->formatNumber($outstandingBalance), 325, $this->getHeight(self::$TOP_MARGIN + 335));
-         $page->drawText("Total Current charges due on       " . $this->invoiceHelper->getPaymentDueDate($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']), self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 360));
+         $paymentDueDate = $this->invoiceHelper->getPaymentDueDate($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']);
+         $page->drawText("Total Current charges due on       " . $paymentDueDate, self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 360));
+         $this->drawTextRightAligned($page, $usageAndChargesData['TotalWithGST'], 325, $this->getHeight(self::$TOP_MARGIN + 360));
          $page->drawLine(self::$LEFT_MARGIN, $this->getHeight(self::$TOP_MARGIN + 365), self::$SECOND_COLUMN_LEFT_MARGIN - 20, $this->getHeight(self::$TOP_MARGIN + 365));
          $this->setBoldText($page, $style);
          // if has giro account
@@ -389,6 +394,8 @@ class InvoiceController extends Zend_Controller_Action
          }else{
              $page->drawText("Please pay by " . $this->invoiceHelper->getPaymentDueDate($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']), self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 378));
          }
+         $this->setNormalText($page, $style);
+         $this->drawTextRightAligned($page, $usageAndChargesData['TotalWithGST'] + $outstandingBalance, 325, $this->getHeight(self::$TOP_MARGIN + 378));
          $page->drawLine(self::$LEFT_MARGIN, $this->getHeight(self::$TOP_MARGIN + 383), self::$SECOND_COLUMN_LEFT_MARGIN - 20, $this->getHeight(self::$TOP_MARGIN + 383));
 
          // Draw Vertical Lines
@@ -427,9 +434,19 @@ class InvoiceController extends Zend_Controller_Action
          $page->drawText("Interest (non-taxable) - Jun", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 425));
          $page->drawText("Interest (non-taxable) - Jul", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 440));
          $page->drawText("Electricity *", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 455));
-         $page->drawText("Reading taken on 31 Jul 14", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 470));
-         $page->drawText("Meter ID: 00064804, Reading: 5318.07", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 510));
-         $page->drawText("7% GST on $822.84 *", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 535));
+         $page->drawText("Reading taken on " . $this->invoiceHelper->convertInvoiceDateFormat(new DateTime($invoiceData['meterData'][0]['Met_CurrentReadDate'])), self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 470));
+         $yPos = $this->getHeight(self::$TOP_MARGIN + 470);
+         foreach($usageAndChargesData['UsageData'] as $usageData){
+             $this->drawTextRightAligned($page, $usageData['Usage'], 340, $yPos);
+             $this->drawTextRightAligned($page, $usageData['Rate'], 415, $yPos);
+             $this->drawTextRightAligned($page, $usageData['Amount'], 485, $yPos);
+             $yPos -= 12;
+         }
+         $page->drawText("Meter ID: " . $invoiceData['meterData'][0]['Met_MeterSerialNumber'] . ", Reading: " . $invoiceData['meterData'][0]['Met_CurrentReadUsage'], self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 510));
+         $page->drawText("7% GST on " . $usageAndChargesData['TotalWithoutGST'] . " *", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 532));
+         $this->drawTextRightAligned($page, $usageAndChargesData['TotalWithoutGST'], 555, $this->getHeight(self::$TOP_MARGIN + 510));
+         $this->drawTextRightAligned($page, $usageAndChargesData['GST'], 555, $this->getHeight(self::$TOP_MARGIN + 532));
+         $this->drawTextRightAligned($page, $usageAndChargesData['TotalWithGST'], 555, $this->getHeight(self::$TOP_MARGIN + 547));
 
          $this->setBoldText($page, $style, 7);
          $page->drawText("* 01 Jul 14 to 30 Sep 14 SP Services Published Tariff Rate is $0.2568 per kWh", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 560));
@@ -452,13 +469,14 @@ class InvoiceController extends Zend_Controller_Action
          $page->drawText("For Cheque Payment:", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 625));
          $page->drawText("Crossed cheque is to be made payable to :-", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 645));
          $this->setBoldText($page, $style);
-         $page->drawText("\"" . $invoiceData['buildingOperatorData'][0]['Buo_Name'] . "\" " . "by      " . "19 Aug 14", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 655));
+         $page->drawText("\"" . $invoiceData['buildingOperatorData'][0]['Buo_Name'] . "\" " . "by      " . $paymentDueDate, self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 655));
          $this->setNormalText($page, $style);
          $page->drawText("Please detach and mail this portion with your cheque to:", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 680));
          $page->drawText($invoiceData['billingAgentData'][0]['Agn_Address1'] . ", " . $invoiceData['billingAgentData'][0]['Agn_Address2'] . ", Singapore " . $invoiceData['billingAgentData'][0]['Agn_PostalCode'], self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 690));
          $page->drawText("(No receipt will be issued)", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 700));
          $page->drawLine(self::$LEFT_MARGIN, $this->getHeight(self::$TOP_MARGIN + 705), self::$SECOND_COLUMN_LEFT_MARGIN + 200, $this->getHeight(self::$TOP_MARGIN + 705));
          $page->drawText("Total Amount Payable", self::$SECOND_COLUMN_LEFT_MARGIN, $this->getHeight(self::$TOP_MARGIN + 720));
+         $this->drawTextRightAligned($page, $usageAndChargesData['TotalWithGST'], 555, $this->getHeight(self::$TOP_MARGIN + 720));
 
          $this->drawBox($page, self::$SECOND_COLUMN_LEFT_MARGIN + 35, $this->getHeight(self::$TOP_MARGIN + 610), self::$SECOND_COLUMN_LEFT_MARGIN + 200, $this->getHeight(self::$TOP_MARGIN + 680), 4);
          $page->drawLine(self::$SECOND_COLUMN_LEFT_MARGIN + 110, $this->getHeight(self::$TOP_MARGIN + 610), self::$SECOND_COLUMN_LEFT_MARGIN + 110, $this->getHeight(self::$TOP_MARGIN + 680));
@@ -466,6 +484,7 @@ class InvoiceController extends Zend_Controller_Action
          $page->drawText("Account No", self::$SECOND_COLUMN_LEFT_MARGIN + 43, $this->getHeight(self::$TOP_MARGIN + 625));
          $page->drawText($invoiceData['shopData'][0]['Sho_CustomerId'], self::$SECOND_COLUMN_LEFT_MARGIN + 120, $this->getHeight(self::$TOP_MARGIN + 625));
          $page->drawText("Invoice No", self::$SECOND_COLUMN_LEFT_MARGIN + 43, $this->getHeight(self::$TOP_MARGIN + 643));
+         $page->drawText($parameters['generatedInvoiceNumber'], self::$SECOND_COLUMN_LEFT_MARGIN + 120, $this->getHeight(self::$TOP_MARGIN + 643));
          $page->drawText("Cheque No", self::$SECOND_COLUMN_LEFT_MARGIN + 43, $this->getHeight(self::$TOP_MARGIN + 659));
          $page->drawText("Bank/Branch", self::$SECOND_COLUMN_LEFT_MARGIN + 43, $this->getHeight(self::$TOP_MARGIN + 676));
 
