@@ -124,7 +124,11 @@ class InvoiceController extends Zend_Controller_Action
                 }
 
                 // insert new row or update in invoices table
-                $invoiceRecord = array("Inv_Id" => $invoiceData['issuedInvoicesData'][0]['Inv_Id'], "Inv_InvoiceNumber" => empty($newFileName) ? $invoiceNumber : $newFileName, "Inv_CustomerId" => $invoiceData['shopData'][0]['Sho_CustomerId'], "Inv_TotalAmount" => "", "Inv_DueDate" => $this->invoiceHelper->getPaymentDueDateInDefaultFormat($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']));
+                $invoiceRecord = array("Inv_Id" => $invoiceData['issuedInvoicesData'][0]['Inv_Id'], "Inv_InvoiceNumber" => empty($newFileName) ? $invoiceNumber : $newFileName, "Inv_CustomerId" => $invoiceData['shopData'][0]['Sho_CustomerId'], "Inv_TotalAmount" => "");
+                // if new invoice , add invoice due date ..
+                if (empty($invoiceData['issuedInvoicesData'])) {
+                   $invoiceRecord["Inv_DueDate"] = $this->invoiceHelper->getPaymentDueDateInDefaultFormat($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']);
+                }
                 $Inv_Id = $this->invoiceHelper->saveIssuedInvoiceRecord($invoiceRecord);
                 // update meterdata record with invoice id
                 $this->invoiceHelper->updateMeterDataRecordAfterInvoiceIssue($invoiceData['meterData'][0], $Inv_Id);
@@ -191,7 +195,11 @@ class InvoiceController extends Zend_Controller_Action
             }
 
             // insert new row or update in invoices table
-            $invoiceRecord = array("Inv_Id" => $invoiceData['issuedInvoicesData'][0]['Inv_Id'], "Inv_InvoiceNumber" => empty($newFileName) ? $invoiceNumber : $newFileName, "Inv_CustomerId" => $invoiceData['shopData'][0]['Sho_CustomerId'], "Inv_TotalAmount" => "", "Inv_DueDate" => $this->invoiceHelper->getPaymentDueDateInDefaultFormat($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']));
+            $invoiceRecord = array("Inv_Id" => $invoiceData['issuedInvoicesData'][0]['Inv_Id'], "Inv_InvoiceNumber" => empty($newFileName) ? $invoiceNumber : $newFileName, "Inv_CustomerId" => $invoiceData['shopData'][0]['Sho_CustomerId'], "Inv_TotalAmount" => "");
+            // if new invoice , add invoice due date ..
+            if (empty($invoiceData['issuedInvoicesData'])) {
+                $invoiceRecord["Inv_DueDate"] = $this->invoiceHelper->getPaymentDueDateInDefaultFormat($this->dateUtil->getToday(), $invoiceData['shopData'][0]['Sho_PaymentTerm']);
+            }
             $Inv_Id = $this->invoiceHelper->saveIssuedInvoiceRecord($invoiceRecord);
             // update meterdata record with invoice id
             $this->invoiceHelper->updateMeterDataRecordAfterInvoiceIssue($invoiceData['meterData'][0], $Inv_Id);

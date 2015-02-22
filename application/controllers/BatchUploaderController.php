@@ -38,8 +38,18 @@ class BatchUploaderController extends Zend_Controller_Action
             $dataArr = $this->convertCsvArrayToDataArray($csvArr, Model_Constants_DataMap::$PAYMENTS_MAP);
             if ($this->checkColumnValidity($csvArr[0], Model_Constants_DataMap::$PAYMENTS_MAP)) {
                 $table = new Model_DbTable_Payments();
+                $tblInterest = new Model_DbTable_Interests();
                 $numRecords = count($dataArr);
-                $numRowsInserted = $this->saveUploadedData($table, $dataArr);
+                $numRowsInserted = 0;
+                foreach($dataArr as $paymentRecord){
+                    $lastInsertId = $table->saveModel($paymentRecord);
+                    if(!empty($lastInsertId)){
+                        $numRowsInserted++;
+                    }
+
+                    $interestData = $this->calculateInterestIfAny($paymentRecord);
+                }
+
                 if ($numRowsInserted == $numRecords) {
                     $this->message->success = "All records are successfully saved.";
                 }
@@ -313,6 +323,13 @@ class BatchUploaderController extends Zend_Controller_Action
          return $lookupMap;
     }
 
+    private function calculateInterestIfAny(){
+
+    }
+
+    private function saveInterestData(){
+
+    }
 }
 
 ?>
