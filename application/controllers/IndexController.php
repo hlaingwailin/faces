@@ -18,15 +18,15 @@ class IndexController extends Zend_Controller_Action
 
     public function testAction(){
 
+        $date1 = "2015-01-10";
+        $date2 = "2016-01-14";
+        $outstandingAmount = 100;
 
-        $test[] = array('Usage' => $usage = 100, 'Rate' => $rate = $this->getRate(), 'Amount' => $usage * $rate);
 
-        print_r($test);exit;
+        echo $this->invoiceHelper->calculateInterest($date1, $date2, $outstandingAmount);
+        exit;
     }
 
-    private function getRate(){
-        return 0.443;
-    }
 }
 
 ?>

@@ -28,6 +28,16 @@ class My_Action_Helper_DateUtil extends Zend_Controller_Action_Helper_Abstract
          return $dateObj->modify("+" . $days . " day");
     }
 
+    public static function getDaysDifference($date1, $date2){
+        $dueDateObj = new DateTime($date1);
+        $payDateObj = new DateTime($date2);
+
+        $interval = $payDateObj->diff($dueDateObj);
+        $d = $interval->days;
+
+        return $d;
+    }
+
 }
 
 ?>

@@ -241,6 +241,25 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
         return empty($number) ? '-' : number_format($number, 2, '.', '');
     }
 
+    function isInterestApplicable($dueDate, $payDate){
+        $dueDateObj = new DateTime($dueDate);
+        $payDateObj = new DateTime($payDate);
+
+        return $dueDateObj < $payDateObj;
+    }
+
+    function calculateInterest($dueDate, $payDate, $outstandingAmount){
+        $dueDateObj = new DateTime($dueDate);
+        $payDateObj = new DateTime($payDate);
+
+        $interval = $payDateObj->diff($dueDateObj);
+        $d = $interval->days;
+
+        $interest = ($outstandingAmount * $d * (0.12/365.25));
+
+        return $this->formatNumber($interest);
+    }
+
     /************************** Privare Helper Methods ***********************************************/
 
 

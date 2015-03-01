@@ -2,6 +2,9 @@
 class BatchUploaderController extends Zend_Controller_Action
 {
     private $message;
+    // action helpers
+    private $dateUtil;
+    private $invoiceHelper;
 
     public function preDispatch()
     {
@@ -17,6 +20,9 @@ class BatchUploaderController extends Zend_Controller_Action
         // for success or error messages : store in session
         $this->message = new Zend_Session_Namespace("message");
         $this->view->message = $this->message;
+
+        $this->dateUtil = $this->_helper->dateUtil;
+        $this->invoiceHelper = $this->_helper->invoices;
 
     }
 
@@ -38,7 +44,6 @@ class BatchUploaderController extends Zend_Controller_Action
             $dataArr = $this->convertCsvArrayToDataArray($csvArr, Model_Constants_DataMap::$PAYMENTS_MAP);
             if ($this->checkColumnValidity($csvArr[0], Model_Constants_DataMap::$PAYMENTS_MAP)) {
                 $table = new Model_DbTable_Payments();
-                $tblInterest = new Model_DbTable_Interests();
                 $numRecords = count($dataArr);
                 $numRowsInserted = 0;
                 foreach($dataArr as $paymentRecord){
@@ -47,7 +52,7 @@ class BatchUploaderController extends Zend_Controller_Action
                         $numRowsInserted++;
                     }
 
-                    $interestData = $this->calculateInterestIfAny($paymentRecord);
+                    $this->handleInterestIfAny($paymentRecord);
                 }
 
                 if ($numRowsInserted == $numRecords) {
@@ -323,11 +328,29 @@ class BatchUploaderController extends Zend_Controller_Action
          return $lookupMap;
     }
 
-    private function calculateInterestIfAny(){
+    private function handleInterestIfAny($paymentRecord){
+         // search invoice table with given Invoice number
+         $tblInvoice = new Model_DbTable_Invoices();
+         $invoiceRecord = $tblInvoice->findOneBySearchCriteria(array('Inv_InvoiceNumber' => $paymentRecord['Pay_InvoiceNumber']));
 
-    }
+         // determine if interest should be applied ..
+         if($this->invoiceHelper->isInterestApplicable($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_CreatedOn'])){
+             // calculate interest amount
+             $outstandingAmount = $invoiceRecord['Inv_TotalAmount'];
+             $interestAmount = $this->invoiceHelper->calculateInterest($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_CreatedOn'], $outstandingAmount);
 
-    private function saveInterestData(){
+             // prepare data to insert into interest table
+             $interestData = array(
+                 'Int_CustomerId' => $invoiceRecord['Inv_CustomerId'],
+                 'Int_InvoiceNumber' => $invoiceRecord['Inv_InvoiceNumber'],
+                 'Int_NumberOfOverdueDays' => $this->dateUtil->getDaysDifference($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_CreatedOn']),
+                 'Int_InterestAmount' => $interestAmount
+             );
+
+             // save interest data
+             $tblInterest = new Model_DbTable_Interests();
+             $tblInterest->saveModel($interestData);
+         }
 
     }
 }
