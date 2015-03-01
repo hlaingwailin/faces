@@ -334,16 +334,16 @@ class BatchUploaderController extends Zend_Controller_Action
          $invoiceRecord = $tblInvoice->findOneBySearchCriteria(array('Inv_InvoiceNumber' => $paymentRecord['Pay_InvoiceNumber']));
 
          // determine if interest should be applied ..
-         if($this->invoiceHelper->isInterestApplicable($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_CreatedOn'])){
+         if($this->invoiceHelper->isInterestApplicable($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_PaymentDate'])){
              // calculate interest amount
              $outstandingAmount = $invoiceRecord['Inv_TotalAmount'];
-             $interestAmount = $this->invoiceHelper->calculateInterest($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_CreatedOn'], $outstandingAmount);
+             $interestAmount = $this->invoiceHelper->calculateInterest($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_PaymentDate'], $outstandingAmount);
 
              // prepare data to insert into interest table
              $interestData = array(
                  'Int_CustomerId' => $invoiceRecord['Inv_CustomerId'],
                  'Int_InvoiceNumber' => $invoiceRecord['Inv_InvoiceNumber'],
-                 'Int_NumberOfOverdueDays' => $this->dateUtil->getDaysDifference($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_CreatedOn']),
+                 'Int_NumberOfOverdueDays' => $this->dateUtil->getDaysDifference($invoiceRecord['Inv_DueDate'], $paymentRecord['Pay_PaymentDate']),
                  'Int_InterestAmount' => $interestAmount
              );
 

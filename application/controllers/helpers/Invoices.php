@@ -260,6 +260,15 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
         return $this->formatNumber($interest);
     }
 
+    function getInterestDataForSpecificPayment($paymentData){
+        $invoiceNumber = $paymentData['Pay_InvoiceNumber'];
+
+        $tblInterest = new Model_DbTable_Interests();
+        $interestData = $tblInterest->findOneBySearchCriteria(array('Int_InvoiceNumber' => $invoiceNumber));
+
+        return $interestData;
+    }
+
     /************************** Privare Helper Methods ***********************************************/
 
 

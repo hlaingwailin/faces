@@ -19,7 +19,7 @@ class Model_Constants_DataMap
 
    public static $METER_MAP = array("Customer ID" => "Met_CustomerId", "Meter ID" => "Met_MeterSerialNumber", "Last Read Usage" => "Met_LastReadUsage", "Last Read Date" => "Met_LastReadDate", "Current Read Usage" => "Met_CurrentReadUsage", "Current Read Date" => "Met_CurrentReadDate", "Previous Usage" => "Met_PreviousUsage", "Previous Usage End Date" => "Met_PreviousUsageEndDate", "Current Usage" => "Met_CurrentUsage", "Current Usage End Date" => "Met_CurrentUsageEndDate", "Batch Number" => "Met_BatchId");
 
-   public static $PAYMENTS_MAP = array("Invoice Number" => "Pay_InvoiceNumber", "Payment Amount" => "Pay_Amount", "Date Of Payment" => "Pay_CreatedOn");
+   public static $PAYMENTS_MAP = array("Invoice Number" => "Pay_InvoiceNumber", "Payment Amount" => "Pay_Amount", "Date Of Payment" => "Pay_PaymentDate");
 
    // table prefix to model map
    public static $PREFIX_TABLE_MAP = array("Bul" => "Model_DbTable_Buildings", "Buo" => "Model_DbTable_BuildingOperators","Dep" => "Model_DbTable_Deposits", "Met" => "Model_DbTable_MeterData", "Ret" => "Model_DbTable_Retailers", "Sop" => "Model_DbTable_Companies", "Sho" => "Model_DbTable_Shops", "Usr" => "tbl_users", "Agn" => "Model_DbTable_BillingAgents", "Rat" => "Model_DbTable_Rates", "Pay" => "Model_DbTable_Payments", "Inv" => "Model_DbTable_Invoices");
