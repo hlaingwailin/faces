@@ -135,6 +135,27 @@ class ListsController extends Zend_Controller_Action
         $this->passDisplayDataToView($selector, $headerColMap);
     }
 
+    public function interestsAction(){
+        $tblInterest = new Model_DbTable_Interests();
+        $selector = $tblInterest->getFindAllSelector($this->getSortInfo());
+
+        // Get Payment Date to search
+        $paymentDate = $this->_getParam('Pay_PaymentDate');
+
+        $headerColMap = array("Customer Id" => "Int_CustomerId", "Invoice No." => "Int_InvoiceNumber", "Overdue Days" => "Int_NumberOfOverdueDays", "Interest" => "Int_InterestAmount");
+
+        if(!empty($paymentDate)){
+            $searchCriteria = array('Pay_PaymentDate' => $paymentDate);
+        }
+
+        if ($this->isSearch()) {
+            $searchCriteria = $searchCriteria + $this->getSearchCriteriaValues();
+            $selector = $tblInterest->populateSelectorWithSearchCriteria($selector, $searchCriteria, true);
+        }
+
+        $this->passDisplayDataToView($selector, $headerColMap);
+    }
+
     private function getPaginator($selector, $itemPerPage){
         $adapter = new Zend_Paginator_Adapter_DbSelect($selector);
         $paginator = new Zend_Paginator($adapter);

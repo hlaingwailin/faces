@@ -27,6 +27,13 @@ class IndexController extends Zend_Controller_Action
         exit;
     }
 
+    public function arrayAction(){
+        $array1 = array('foo' => 'foo');
+        $array2 = array('doo' => 'doo');
+
+        print_r($array1 + $array2);exit;
+    }
+
 }
 
 ?>

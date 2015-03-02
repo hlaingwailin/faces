@@ -15,6 +15,18 @@ class Model_DbTable_Base extends Zend_Db_Table_Abstract
         return $this->fetchAll($select)->toArray();
     }
 
+    public function findAllByExactCriteria(array $searchCriteria, array $sort = null){
+        $select = $this->select();
+
+        if (!empty($sort)) {
+            $select->order($sort['name'] . ' ' . $sort['order']);
+        }
+
+        $select = $this->populateSelectorWithSearchCriteria($select, $searchCriteria, true);
+
+        return $this->fetchAll($select)->toArray();
+    }
+
     public function findAllBySearchCriteria(array $searchCriteria, array $sort = null){
         $select = $this->select();
 
@@ -79,11 +91,20 @@ class Model_DbTable_Base extends Zend_Db_Table_Abstract
         return $select;
     }
 
-    public function populateSelectorWithSearchCriteria(Zend_Db_Select $selector, $searchCriteria){
-        foreach($searchCriteria as $key => $value){
-             if(!empty($value)){
-                 $selector->where($key . ' LIKE \'%' . $value . '%\'');
-             }
+    public function populateSelectorWithSearchCriteria(Zend_Db_Select $selector, $searchCriteria, $exact=false){
+
+        if($exact == true){
+            foreach ($searchCriteria as $key => $value) {
+                if (!empty($value)) {
+                    $selector->where($key . ' = \'' . $value . '\'');
+                }
+            }
+        }else{
+            foreach ($searchCriteria as $key => $value) {
+                if (!empty($value)) {
+                    $selector->where($key . ' LIKE \'%' . $value . '%\'');
+                }
+            }
         }
 
         return $selector;
