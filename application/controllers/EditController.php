@@ -70,6 +70,10 @@ class EditController extends Zend_Controller_Action
     public function shopsAction(){
         $id = $this->_getParam('Sho_Id');
 
+        if(empty($id)){
+            $this->_redirect('/lists/shops');
+        }
+
         $tblShops = new Model_DbTable_Shops();
         $shopForm = new Form_ShopsForm();
 
