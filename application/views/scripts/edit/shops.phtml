@@ -99,7 +99,7 @@
                  </tr>
             </thead>
             <tbody>
-            <?php for ($i = 0; $i < count($this->combinedData['meterData']); $i++) { ?>
+            <?php for ($i = 0; $i < count($this->combinedData['invoicesData']); $i++) { ?>
             <tr>
                 <?php  foreach ($displayCols as $key => $type) { ?>
                 <td>
@@ -112,14 +112,42 @@
         </table>
     </div>
 
+
+    <!--  Payments -->
+
+    <div id="payments" style="display:none;" class="tabdivision">
+        <table id="listTable">
+            <?php $displayCols = array('Pay_Amount' => 'text', 'Pay_PaymentDate' => 'text', 'Pay_InvoiceNumber' => 'text'); ?>
+            <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Payment Date</th>
+                <th>Invoice Number</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php for ($i = 0; $i < count($this->combinedData['invoicesData']); $i++) { ?>
+            <?php if(!empty($this->combinedData['invoicesData'][$i]['Pay_Id'])){ ?>
+            <tr>
+                <?php  foreach ($displayCols as $key => $type) { ?>
+                <td>
+                    <span><?php echo $this->combinedData['invoicesData'][$i][$key] ?></span>
+                </td>
+                <?php } ?>
+            </tr>
+            <?php } ?>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+
     <!--  Deposits -->
 
 <div id="deposits" style="display:none;" class="tabdivision">
     <table id="listTable">
-        <?php $displayCols = array('Dep_Id' => 'hidden', 'Dep_Amount' => 'text', 'Dep_Type' => 'text', 'Dep_CreatedOn' => 'text'); ?>
+        <?php $displayCols = array('Dep_Amount' => 'text', 'Dep_Type' => 'text', 'Dep_CreatedOn' => 'text'); ?>
         <thead>
              <tr>
-                 <th></th>
                  <th>Amount</th>
                  <th>Type</th>
                  <th>Date</th>
@@ -128,12 +156,17 @@
         <tbody>
         <?php for($i = 0; $i < count($this->combinedData['depositData']); $i++) { ?>
             <tr>
-                <?php  foreach($this->combinedData['depositData'][$i] as $key => $value){ ?>
-                    <?php if(array_key_exists($key, $displayCols)){ ?>
-                        <td>
-                             <input type="<?php echo $displayCols[$key] ?>" name="depositData[<?php echo $i ?>][<?php echo $key ?>]" value="<?php echo $value ?>" />
-                        </td>
-                    <?php } ?>
+                <?php // foreach($this->combinedData['depositData'][$i] as $key => $value){ ?>
+                    <?php // if(array_key_exists($key, $displayCols)){ ?>
+                       <!-- <td>
+                           <input type="<?php echo $displayCols[$key] ?>" name="depositData[<?php echo $i ?>][<?php echo $key ?>]" value="<?php echo $value ?>" />
+                        </td>  -->
+                    <?php // } ?>
+                <?php // } ?>
+                <?php foreach ($displayCols as $key => $type) { ?>
+                      <td>
+                          <span><?php echo $this->combinedData['depositData'][$i][$key] ?></span>
+                      </td>
                 <?php } ?>
              </tr>
         <?php } ?>

@@ -201,16 +201,20 @@ class EditController extends Zend_Controller_Action
 
         // Deposits Info
         $tblDeposits = new Model_DbTable_Deposits();
-        $depositData = $tblDeposits->findAllBySearchCriteria(array('Dep_ShopId' => $shopData[0]['Sho_Id']));
+        $depositData = $tblDeposits->findAllByExactCriteria(array('Dep_ShopId' => $shopData[0]['Sho_Id']));
 
         // Meter Reads
         $tblMeterData = new Model_DbTable_MeterData();
-        $meterData = $tblMeterData->findAllBySearchCriteria(array('Met_CustomerId' => $shopData[0]['Sho_CustomerId']));
+        $meterData = $tblMeterData->findAllByExactCriteria(array('Met_CustomerId' => $shopData[0]['Sho_CustomerId']));
 
         // Invoices that have been issued so far
         $tblInvoices = new Model_DbTable_Invoices();
         $searchCriteria['Inv_CustomerId'] = $shopData[0]['Sho_CustomerId'];
-        $invoicesData = $tblInvoices->findAllBySearchCriteria($searchCriteria);
+        $invoicesData = $tblInvoices->findAllWithChildDataBySearchCriteria($searchCriteria);
+
+        // Payments
+        // $tblPayments = new Model_DbTable_Invoices();
+        // $paymentData = $tblPayments->findAllWithChildDataBySearchCriteria(array('Inv_CustomerId' => $shopData[0]['Sho_CustomerId']));
 
         $combineData = array(
             'shopData' => $shopData,

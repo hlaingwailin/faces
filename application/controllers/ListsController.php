@@ -8,6 +8,10 @@ class ListsController extends Zend_Controller_Action
         if (!$this->_helper->security->isAuthenticatedAdmin()) {
             $this->_redirect('/admin/index');
         }
+
+        // for success or error messages : store in session
+        $this->message = new Zend_Session_Namespace("message");
+        $this->view->message = $this->message;
     }
 
     public function indexAction()
@@ -137,15 +141,16 @@ class ListsController extends Zend_Controller_Action
 
     public function interestsAction(){
         $tblInterest = new Model_DbTable_Interests();
-        $selector = $tblInterest->getFindAllSelector($this->getSortInfo());
+        $selector = $tblInterest->getFindAllWithParentDataSelector($this->getSortInfo());
 
         // Get Payment Date to search
-        $paymentDate = $this->_getParam('Pay_PaymentDate');
+        $paymentCreateDate = $this->_getParam('Pay_CreatedOn');
 
-        $headerColMap = array("Customer Id" => "Int_CustomerId", "Invoice No." => "Int_InvoiceNumber", "Overdue Days" => "Int_NumberOfOverdueDays", "Interest" => "Int_InterestAmount");
+        $headerColMap = array("Customer Id" => "Int_CustomerId", "Invoice No." => "Int_InvoiceNumber", "Overdue Days" => "Int_NumberOfOverdueDays", "Interest" => "Int_InterestAmount", "Due Date" => "Inv_DueDate", "Pay Date" => "Pay_PaymentDate", "Created" => "Pay_CreatedOn");
 
-        if(!empty($paymentDate)){
-            $searchCriteria = array('Pay_PaymentDate' => $paymentDate);
+        $searchCriteria = array();
+        if(!empty($paymentCreateDate)){
+            $searchCriteria = array('Pay_CreatedOn' => $paymentCreateDate);
         }
 
         if ($this->isSearch()) {

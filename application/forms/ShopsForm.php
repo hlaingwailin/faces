@@ -66,6 +66,8 @@ class Form_ShopsForm extends Zend_Form
         $meterId->setDecorators($decorator);
 
         $terminated = new Zend_Form_Element_Checkbox('Sho_Terminated');
+        $terminated->setUncheckedValue('0');
+        $terminated->setCheckedValue('1');
         $terminated->setDecorators($decorator);
 
         $remark = new Zend_Form_Element_Textarea('Sho_Remark');

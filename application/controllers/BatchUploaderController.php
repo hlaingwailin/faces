@@ -57,6 +57,7 @@ class BatchUploaderController extends Zend_Controller_Action
 
                 if ($numRowsInserted == $numRecords) {
                     $this->message->success = "All records are successfully saved.";
+                    $this->_redirect('/lists/interests/Pay_CreatedOn/' . date("Y-m-d"));
                 }
             } else {
                 $this->message->error = "Invalid columns specified in CSV file";

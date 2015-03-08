@@ -34,6 +34,12 @@ class IndexController extends Zend_Controller_Action
         print_r($array1 + $array2);exit;
     }
 
+    public function urlAction(){
+       // echo $this->getHelper('url')->url(array('controller' => 'lists', 'action' => 'interests', 'Pay_PaymentDate' => "2014"));
+        echo $this->getRequest()->getBaseUrl();
+        exit;
+    }
+
 }
 
 ?>

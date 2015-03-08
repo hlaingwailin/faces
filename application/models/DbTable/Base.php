@@ -4,6 +4,7 @@ class Model_DbTable_Base extends Zend_Db_Table_Abstract
 {
 
     protected $_parentTableMap = array();
+    protected $_childTableMap = array();
 
     public function findAll(array $sort = null){
         $select = $this->select();
@@ -43,6 +44,57 @@ class Model_DbTable_Base extends Zend_Db_Table_Abstract
 
         $dataArr = $this->findAllBySearchCriteria($searchCriteria, $sort);
         return $dataArr[0];
+    }
+
+    public function findAllWithChildDataBySearchCriteria(array $searchCriteria, array $sort = null, $join = 'LEFT'){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        $select = $db->select()->from(array('parent' => $this->_name));
+
+        if (!empty($this->_childTableMap)) {
+            $i = 1;
+            foreach ($this->_childTableMap as $tblName => $condition) {
+                if(strtolower($join) == 'left'){
+                    $select->joinLeft(array('child' . $i++ => $tblName), $condition);
+                }elseif(strtolower($join) == 'right'){
+                    $select->joinRight(array('child' . $i++ => $tblName), $condition);
+                }elseif(strtolower($join) == 'inner'){
+                    $select->joinInner(array('child' . $i++ => $tblName), $condition);
+                }else{
+                    $select->join(array('child' . $i++ => $tblName), $condition);
+                }
+            }
+        }
+
+        if (!empty($sort)) {
+            $select->order($sort['name'] . ' ' . $sort['order']);
+        }
+
+        $select = $this->populateSelectorWithSearchCriteria($select, $searchCriteria);
+
+        return $this->getAdapter()->fetchAll($select);
+    }
+
+    public function findAllWithParentDataBySearchCriteria(array $searchCriteria, array $sort = null){
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        $select = $db->select()->from(array('parent' => $this->_name));
+
+        if (!empty($this->_parentTableMap)) {
+            $i = 1;
+            foreach ($this->_parentTableMap as $tblName => $condition) {
+                $select->joinLeft(array('parent' . $i++ => $tblName), $condition);
+            }
+        }
+
+        if (!empty($sort)) {
+            $select->order($sort['name'] . ' ' . $sort['order']);
+        }
+
+        $select = $this->populateSelectorWithSearchCriteria($select, $searchCriteria);
+
+        return $this->fetchAll($select)->toArray();
     }
 
     public function getFindAllSelector(array $sort = null){
