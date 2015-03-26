@@ -162,13 +162,18 @@ class My_Action_Helper_Invoices extends Zend_Controller_Action_Helper_Abstract
      * @param $batchId
      * @param $invoiceNumber
      */
-    function updateInvoiceRunningNumber($buildingPrefix, $batchId, $invoiceNumber){
+    function updateInvoiceRunningNumber($buildingPrefix, $batchId, $invoiceNumber, $insert = false){
           $partsArr = explode($batchId, $invoiceNumber);
           $number = ltrim($partsArr[1], "0");
 
           $tblRunningNumber = new Model_DbTable_InvoiceRunningNumber();
-          $numRowsUpdated = $tblRunningNumber->incrementRunningNumber($buildingPrefix, $batchId, $number);
 
+          if($insert == true){
+              $modelObj = array('Irn_Prefix' => $buildingPrefix, 'Irn_BatchId' => $batchId, 'Irn_CurrentNumber' => $number);
+              $tblRunningNumber->saveModel($modelObj);
+          }else{
+              $numRowsUpdated = $tblRunningNumber->incrementRunningNumber($buildingPrefix, $batchId, $number);
+          }
     }
 
     function saveIssuedInvoiceRecord($invoiceRecord){

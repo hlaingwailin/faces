@@ -18,6 +18,11 @@ class DataloaderController extends Zend_Controller_Action
         $user['Usr_Email'] = "hlaingwailin@gmail.com";
         $user['Usr_Password'] = md5("p@ssw0rd!!");
         $user['Usr_Role'] = "admin";
+
+        $user['Usr_Email'] = "hlaingwailin@gmail.com";
+        $user['Usr_Password'] = md5("p@ssw0rd!!");
+        $user['Usr_Role'] = "admin";
+
         $users[] = $user;
 
         return $users;

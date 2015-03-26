@@ -135,10 +135,11 @@ class InvoiceController extends Zend_Controller_Action
 
                 // insert new row in invoicerunningnumber table if it is first time creation
                 if (empty($invoiceData['issuedInvoicesData'])) {
-                    $this->invoiceHelper->updateInvoiceRunningNumber($invoiceData['buildingData'][0]['Bul_InvoicePrefix'], $invoiceData['meterData'][0]['Met_BatchId'], $invoiceNumber);
+                    $insert = empty($invoiceData['invoiceRunningNumberData']) ? true : false;
+                    $this->invoiceHelper->updateInvoiceRunningNumber($invoiceData['buildingData'][0]['Bul_InvoicePrefix'], $invoiceData['meterData'][0]['Met_BatchId'], $invoiceNumber, $insert);
                 }
 
-                if($key == 50){ // to be removed on production
+                if($key == 10){ // to be removed on production
                     break;
                 }
             }
@@ -206,7 +207,8 @@ class InvoiceController extends Zend_Controller_Action
 
             // insert new row in invoicerunningnumber table if it is first time creation
             if (empty($invoiceData['issuedInvoicesData'])) {
-                 $this->invoiceHelper->updateInvoiceRunningNumber($invoiceData['buildingData'][0]['Bul_InvoicePrefix'], $invoiceData['meterData'][0]['Met_BatchId'], $invoiceNumber);
+                 $insert = empty($invoiceData['invoiceRunningNumberData']) ? true : false;
+                 $this->invoiceHelper->updateInvoiceRunningNumber($invoiceData['buildingData'][0]['Bul_InvoicePrefix'], $invoiceData['meterData'][0]['Met_BatchId'], $invoiceNumber, $insert);
             }
 
             $this->getResponse()->setHeader('Content-type', 'application/pdf');
@@ -382,10 +384,10 @@ class InvoiceController extends Zend_Controller_Action
 
          // retrieve and calculate usage and charges data
          $usageAndChargesData = $this->invoiceHelper->getCurrentInvoiceChargeData($invoiceData['meterData'][0]);
-         if(!empty($interestData)){
+
               $usageAndChargesData['TotalWithGST'] = $usageAndChargesData['TotalWithGST'] + $interestData['Int_InterestAmount'];
               $totalWithInterest = $usageAndChargesData['TotalWithoutGST'] + $interestData['Int_InterestAmount'];
-         }
+
 
          $page->drawText("Balance B/F from previous Invoice", self::$LEFT_MARGIN + 4, $this->getHeight(self::$TOP_MARGIN + 305));
          $this->drawTextRightAligned($page, $this->invoiceHelper->formatNumber($previousInvoiceBalance['Inv_TotalAmount']), 325, $this->getHeight(self::$TOP_MARGIN + 305));
@@ -623,6 +625,10 @@ class InvoiceController extends Zend_Controller_Action
          $tblInvoices = new Model_DbTable_Invoices();
          $issuedInvoicesData = $tblInvoices->find($meterData[0]['Met_InvoiceId'])->toArray();
 
+         // Invoice Running Number Data
+         $tblInvoiceRunningNumber = new Model_DbTable_InvoiceRunningNumber();
+         $invoiceRunningNumberData = $tblInvoiceRunningNumber->findAllByExactCriteria(array('Irn_Prefix' => $buildingData[0]['Bul_InvoicePrefix'], 'Irn_BatchId' => $meterData[0]['Met_BatchId']));
+
          $invoiceData = array(
              'meterData' => $meterData,
              'shopData' => $shopData,
@@ -632,7 +638,8 @@ class InvoiceController extends Zend_Controller_Action
              'retailerData' => $retailerData,
              'billingAgentData' => $billingAgentData,
              'depositData' => $depositData,
-             'issuedInvoicesData' => $issuedInvoicesData
+             'issuedInvoicesData' => $issuedInvoicesData,
+             'invoiceRunningNumberData' => $invoiceRunningNumberData
          );
 
          return $invoiceData;
